@@ -5,19 +5,22 @@
  *  Author:     Prof. Li-Yan Yuan
  *
  *  Modified by: Braeden Soetaert
- *  Modifications: Added default admin user
+ *  Modifications: Added default admin user and made ids identities.
  */
 DROP TABLE family_doctor;
 DROP TABLE pacs_images;
 DROP TABLE radiology_record;
 DROP TABLE users;
 DROP TABLE persons;
+DROP SEQUENCE person_seq;
+DROP SEQUENCE record_seq;
+DROP SEQUENCE image_seq;
 
 /*
  *  To store the personal information
  */
 CREATE TABLE persons (
-   person_id int,
+   person_id INT,
    first_name varchar(24),
    last_name  varchar(24),
    address    varchar(128),
@@ -87,13 +90,63 @@ CREATE TABLE pacs_images (
 );
 
 /*
+ * Make person id auto-increment.
+ */
+CREATE SEQUENCE person_seq;
+
+CREATE OR REPLACE TRIGGER persons_id 
+BEFORE INSERT ON persons
+FOR EACH ROW
+
+BEGIN
+  SELECT person_seq.NEXTVAL
+  INTO   :new.person_id
+  FROM   dual;
+END;
+/
+
+/*
+ * Make record id auto-increment.
+ */
+CREATE SEQUENCE record_seq;
+
+CREATE OR REPLACE TRIGGER record_id
+BEFORE INSERT ON radiology_record
+FOR EACH ROW
+
+BEGIN
+  SELECT record_seq.NEXTVAL
+  INTO   :new.record_id
+  FROM   dual;
+END;
+/
+
+/*
+ * Make image id auto-increment.
+ */
+CREATE SEQUENCE image_seq;
+
+CREATE OR REPLACE TRIGGER image_id
+BEFORE INSERT ON pacs_images
+FOR EACH ROW
+
+BEGIN
+  SELECT image_seq.NEXTVAL
+  INTO   :new.image_id
+  FROM   dual;
+END;
+/
+
+/*
  * Add default admin into persons.
  */
 INSERT INTO persons
-VALUES (1, NULL, NULL, NULL, NULL, NULL);
+VALUES ( NULL, 'Admin', 'Admin', NULL, NULL, NULL );
 
 /*
  * Add default admin into users.
+ * Default Admin's person id is 1 due to int field and
+ * sequences.
  */
 INSERT INTO users
-VALUES ('admin','admin', 'a', 1, SYSDATE );
+VALUES ('Admin','Admin', 'a', 1, SYSDATE );
