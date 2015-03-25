@@ -1,0 +1,26 @@
+TODO: Elaborate on first two steps, setup DB name, no git clone as
+it brings unwanted files.
+
+Steps:
+1. Get DB server set up
+2. Get Tomcat set up
+3. cd catalina/webapps
+4. git clone "repo url"
+5. cd CMPUT391Project
+6. cp index.html ../ROOT/index.html (Sets up homepage. May want to make copy of
+original index.html in ROOT before copying.)
+7. edit META-INF/context.xml to put own DB username and password in.
+8. Code Modules without entering username/password. See login2.jsp (which will
+eventually become just login.jsp) for an example on connection setup. (You will
+need to include all the includes that are included in login2.jsp except maybe
+javax.naming.*)
+
+Access web pages through:
+<comp-name>:<port>/CMPUT391Project/<file>
+example:
+ui04.cs.ualberta.ca:16050/CMPUT391Project/login/login.jsp
+
+
+TODO: Remove point 8 and continue future steps.
+
+
