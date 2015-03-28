@@ -13,4 +13,14 @@
  <res-auth>Container</res-auth>
 </resource-ref>
 
+
+ <servlet>
+	<servlet-name>UploadImage</servlet-name>
+        <servlet-class>UploadImage</servlet-class>
+</servlet>
+<servlet-mapping>
+        <servlet-name>UploadImage</servlet-name>
+        <url-pattern>/UploadImage</url-pattern>
+</servlet-mapping>
+
 </web-app>
