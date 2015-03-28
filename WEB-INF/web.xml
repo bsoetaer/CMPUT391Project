@@ -23,4 +23,13 @@
         <url-pattern>/UploadImage</url-pattern>
 </servlet-mapping>
 
+ <servlet>
+	<servlet-name>GetOnePic</servlet-name>
+        <servlet-class>GetOnePic</servlet-class>
+</servlet>
+<servlet-mapping>
+        <servlet-name>GetOnePic</servlet-name>
+        <url-pattern>/GetOnePic</url-pattern>
+</servlet-mapping>
+
 </web-app>
