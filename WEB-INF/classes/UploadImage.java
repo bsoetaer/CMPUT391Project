@@ -56,7 +56,7 @@ import org.apache.commons.fileupload.DiskFileUpload;
 import org.apache.commons.fileupload.FileItem;
 
 public class UploadImage extends HttpServlet {
-    public String response_message;
+    public String response_message = "";
     public void doPost(HttpServletRequest request,HttpServletResponse response)
 	throws ServletException, IOException {
 	//  change the following parameters to connect to the oracle database
@@ -69,65 +69,80 @@ public class UploadImage extends HttpServlet {
 	try {
 	    //Parse the HTTP request to get the image stream
 	    DiskFileUpload fu = new DiskFileUpload();
-	    List FileItems = fu.parseRequest(request);
+	    List<FileItem> FileItems = fu.parseRequest(request);
 	        
 	    // Process the uploaded items, assuming only 1 image file uploaded
-	    Iterator i = FileItems.iterator();
-	    FileItem item = (FileItem) i.next();
-	    while (i.hasNext() && item.isFormField()) {
-		item = (FileItem) i.next();
+	    FileItem imagePath = null;
+	    String record_id = "";
+	    int image_id = -1;
+	    long size = 0;
+	    for (FileItem item : FileItems){
+	    	String fieldName = item.getFieldName();
+	    	if (fieldName.equals("image_path")){
+	    		imagePath = item;
+	    		size = item.getSize();
+	    	}else if (fieldName.equals("record_id")){
+	    		record_id = item.getString();
+	    	}
 	    }
 
 	    //Get the image stream
-	    InputStream instream = item.getInputStream();
+	    InputStream instream = imagePath.getInputStream();
 
 	    BufferedImage img = ImageIO.read(instream);
 	    BufferedImage thumbNail = shrink(img, 10);
+	    BufferedImage regularImage = shrink(img,2);
 
-            // Connect to the database and create a statement
-            Connection conn = getConnected(drivername,dbstring, username,password);
+        // Connect to the database and create a statement
+        Connection conn = getConnected(drivername,dbstring, username,password);
+	    conn.setAutoCommit(false); // THIS caused a lot of problems.. 
 	    Statement stmt = conn.createStatement();
-	    
+
 	    /*
 	     *  First, to generate a unique pic_id using an SQL sequence
 	     */
-	    ResultSet rset1 = stmt.executeQuery("SELECT pic_id_sequence.nextval from dual");
+	    stmt.setQueryTimeout(60);
+	    ResultSet rset1 = stmt.executeQuery("SELECT image_id_sequence.nextval from dual");
 	    rset1.next();
-	    pic_id = rset1.getInt(1);
-
+	    image_id = rset1.getInt(1);
 	    //Insert an empty blob into the table first. Note that you have to 
 	    //use the Oracle specific function empty_blob() to create an empty blob
-	    stmt.execute("INSERT INTO pictures VALUES("+pic_id+",'test',empty_blob())");
- 
+
+	    stmt.execute("INSERT INTO pacs_images VALUES(" + record_id + ","
+					+ image_id + ", empty_blob(), empty_blob(), empty_blob())");
+
 	    // to retrieve the lob_locator 
 	    // Note that you must use "FOR UPDATE" in the select statement
-	    String cmd = "SELECT * FROM pictures WHERE pic_id = "+pic_id+" FOR UPDATE";
-	    ResultSet rset = stmt.executeQuery(cmd);
-	    rset.next();
-	    BLOB myblob = ((OracleResultSet)rset).getBLOB(3);
+ 		String cmd = "SELECT * FROM pacs_images WHERE image_id = " + image_id + " AND record_id = "
+ 			+record_id +"  FOR UPDATE";
+		ResultSet rset = stmt.executeQuery(cmd);
+		rset.next();
+		BLOB thumb = ((OracleResultSet) rset).getBLOB(3);
+		BLOB regular = ((OracleResultSet) rset).getBLOB(4);
+		BLOB full = ((OracleResultSet) rset).getBLOB(5);
+
+		OutputStream full_outstream = full.getBinaryOutputStream();
+		ImageIO.write(img, "jpg", full_outstream);
+
+		OutputStream thumb_outstream = thumb.getBinaryOutputStream();
+		ImageIO.write(thumbNail, "jpg", thumb_outstream);
+
+		OutputStream regular_outstream = regular.getBinaryOutputStream();
+		ImageIO.write(regularImage, "jpg", regular_outstream);
+
+		instream.close();	
+ 		full_outstream.close();
+ 		thumb_outstream.close();
+ 		regular_outstream.close();
 
 
-	    //Write the image to the blob object
-	    OutputStream outstream = myblob.getBinaryOutputStream();
-	    ImageIO.write(thumbNail, "jpg", outstream);
-	    
-	    /*
-	    int size = myblob.getBufferSize();
-	    byte[] buffer = new byte[size];
-	    int length = -1;
-	    while ((length = instream.read(buffer)) != -1)
-		outstream.write(buffer, 0, length);
-	    */
-	    instream.close();
-	    outstream.close();
 
-            stmt.executeUpdate("commit");
+        stmt.executeUpdate("commit");
 	    response_message = " Upload OK!  ";
-            conn.close();
+        conn.close();
 
 	} catch( Exception ex ) {
-	    //System.out.println( ex.getMessage());
-	    response_message = ex.getMessage();
+	    response_message = response_message + " "+ ex.toString() ;
 	}
 
 	//Output response to the client
@@ -139,7 +154,7 @@ public class UploadImage extends HttpServlet {
 		    "<HEAD><TITLE>Upload Message</TITLE></HEAD>\n" +
 		    "<BODY>\n" +
 		    "<H1>" +
-		            response_message +
+		            response_message + "   ....as;dfkasjd;fklajsdf"  + 
 		    "</H1>\n" +
 		    "</BODY></HTML>");
     }

@@ -35,11 +35,11 @@ public class GetOnePic extends HttpServlet
 	String picid  = request.getQueryString();
 	String query;
 
-	if ( picid.startsWith("big") )  
-	    query = 
-	     "select pic from pictures where pic_id=" + picid.substring(3);
-	else
+	if ( picid.startsWith("full") )  
+	    query = "select pic from pictures where pic_id=" + picid.substring(4);
+	else if ( picid.startsWith("regular") )  
 	    query = "select pic from pictures where pic_id=" + picid;
+	else   
 
 	ServletOutputStream out = response.getOutputStream();
 

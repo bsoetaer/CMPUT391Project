@@ -14,7 +14,7 @@ DROP TABLE users;
 DROP TABLE persons;
 DROP SEQUENCE person_seq;
 DROP SEQUENCE record_seq;
-DROP SEQUENCE image_seq;
+DROP SEQUENCE image_id_sequence;
 
 /*
  *  To store the personal information
@@ -124,6 +124,7 @@ END;
 /*
  * Make image id auto-increment.
  */
+ /*
 CREATE SEQUENCE image_seq;
 
 CREATE OR REPLACE TRIGGER image_id
@@ -136,7 +137,8 @@ BEGIN
   FROM   dual;
 END;
 /
-
+*/
+CREATE SEQUENCE image_id_sequence;
 /*
  * Add default admin into persons.
  */

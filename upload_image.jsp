@@ -22,15 +22,15 @@ Note that (1) the table in the database is created by
 <p>
 </p><hr>
 Please input or select the path of the image!
-<form name="upload-image" method="POST" enctype="multipart/form-data" action="UploadImage">
+<form name="upload-image" method="POST" enctype="multipart/form-data" action="UploadImage?rid=${param.rid}">
 <table>
   <tbody><tr>
     <th>File path: </th>
-    <td><input name="image-path" size="30" type="file"></td>
+    <td><input name="image_path" type="file"></td>
   </tr>
   <tr>
-    <th>Record Id: </th>
-    <td><input name="record_id" size="30" type="number"></td>
+    <th>Record Id </th>
+    <td><input name="record_id" type="number"></td>
   </tr>
   <tr>
     <td colspan="2" align="CENTER"><input name=".submit" value="Upload" type="submit"></td>
@@ -38,5 +38,6 @@ Please input or select the path of the image!
 </tbody></table>
 </form>
  
-
+HI!
+${param.rid}
 </body></html>
