@@ -32,14 +32,15 @@ public class GetOnePic extends HttpServlet
 	throws ServletException, IOException {
 	
 	//  construct the query  from the client's QueryString
-	String picid  = request.getQueryString();
+	String imageid  = request.getQueryString();
 	String query;
 
-	if ( picid.startsWith("full") )  
-	    query = "select pic from pictures where pic_id=" + picid.substring(4);
-	else if ( picid.startsWith("regular") )  
-	    query = "select pic from pictures where pic_id=" + picid;
-	else   
+	if ( imageid.startsWith("full") )  
+	    query = "select full_size from pacs_images where image_id=" + imageid.substring(4);
+	else if ( imageid.startsWith("regular") )  
+	    query = "select regular_size from pacs_images where image_id=" + imageid.substring(7);
+	else
+		query = "select thumbnail from pacs_images where image_id=" + imageid.substring(9);
 
 	ServletOutputStream out = response.getOutputStream();
 
