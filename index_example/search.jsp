@@ -206,6 +206,9 @@
           
             if(!(request.getParameter("query").equals("")))
             {
+              String sql statement = "SELECT patient_id, doctor_id, radiologist_id , test_type , prescribing_date , test_date,diagnosis,description
+              FROM radiology_record
+              WHERE "
               PreparedStatement doSearch = m_con.prepareStatement("SELECT score(1), itemName, description FROM item WHERE contains(description, ?, 1) > 0 order by score(1) desc");
               doSearch.setString(1, request.getParameter("query"));
               ResultSet rset2 = doSearch.executeQuery();
