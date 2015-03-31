@@ -10,7 +10,7 @@
 <p>
 </p><hr>
 Enter relevant fields:
-<form name="Create_rad_record" method="POST" enctype="multipart/form-data" action="/CMPUT391Project/Upload/make_record.jsp?rid=${param.rid}">
+<form name="Create_rad_record" action="/CMPUT391Project/upload/make_record.jsp?rid=${param.rid}">
 <table>
   <tbody><tr>
     <th>Patient id</th>
@@ -50,20 +50,35 @@ Enter relevant fields:
 <%@ page import="javax.sql.*" %>
 <%@ page import="javax.naming.*" %>
 <%@ page import="java.io.IOException" %>
+<%@ page import="java.text.DateFormat" %>
+<%@ page import="java.util.Date" %>
+<%@ page import="java.text.SimpleDateFormat" %>
+
+
   
   <%!
     /**
      * Get and display personal info as html table rows.
      */
-    void form(Integer person_id, Connection conn, JspWriter out) throws SQLException, IOException{
-
-     if (request.getParameter("create_record") != null){
+    void form(Integer person_id,HttpServletRequest request, Connection conn, JspWriter out) throws SQLException, IOException
+    {
+    
+     if (request.getParameter("create_record") != null)
+     {
+     out.println("<hr> OKAY THEN I CAN ATLEAST CREATE RECORD<hr>");
       try{
-        if(!(request.getParameter("patient_id").equals("") || request.getParameter("doctor_id").equals("")) || request.getParameter("test_type").equals("")) || request.getParameter("prescribing_date").equals("")) || request.getParameter("test_date").equals("")) || request.getParameter("diagnosis").equals("")) || request.getParameter("description").equals(""))
+        if(!
+        (request.getParameter("patient_id").equals("") || 
+        request.getParameter("doctor_id").equals("") || 
+        request.getParameter("test_type").equals("") || 
+        request.getParameter("prescribing_date").equals("") || 
+        request.getParameter("test_date").equals("") || 
+        request.getParameter("diagnosis").equals("") || 
+        request.getParameter("description").equals(""))
         )
         {
             conn.setAutoCommit(false);
-            Statement stmt2 = m_con.createStatement();
+            Statement stmt2 = conn.createStatement();
             ResultSet rset2 = stmt2.executeQuery("select record_seq.NEXTVAL from dual");
             int nextItemId;
             if(rset2.next())
@@ -80,13 +95,34 @@ Enter relevant fields:
             // check the fields tho
             int patient_id = Integer.parseInt(request.getParameter("patient_id"));
             int doctor_id = Integer.parseInt(request.getParameter("doctor_id"));
+            int rad_id = person_id;
+            String test_type = request.getParameter("test_type");
+            String sprescribing_date = request.getParameter("prescribing_date");
+            String stest_date = request.getParameter("test_date");
+            String diagnosis = request.getParameter("diagnosis");
+            String description = request.getParameter("description");
+            // date stuff
+            DateFormat dateFormat = new SimpleDateFormat("MM-dd-yyyy");
+            Date prescribing_date = dateFormat.parse(sprescribing_date);
+            Date test_date = dateFormat.parse(stest_date);
+
+
 
 
 
             PreparedStatement addRecord = conn.prepareStatement("insert into radiology_record values(?, ?, ? , ? , ? , ? , ?, ? , ?)");
             addRecord.setInt(1, nextItemId);
-            addRecord.setString(2, request.getParameter("itemName"));
-            addRecord.setString(3, request.getParameter("description"));
+            addRecord.setInt(2, patient_id);
+            addRecord.setInt(3, doctor_id);
+            addRecord.setInt(4, rad_id);
+            addRecord.setString(5, test_type);
+            
+
+            addRecord.setDate(6, new java.sql.Date(prescribing_date.getTime()));
+            addRecord.setDate(7,  new java.sql.Date(test_date.getTime()));
+            addRecord.setString(8, diagnosis);
+            addRecord.setString(9, description);
+
             addRecord.executeUpdate();
             stmt2.executeUpdate("commit");
             stmt2.close();
@@ -96,19 +132,15 @@ Enter relevant fields:
 
 
         }
-        else
-          {
-            addItemError = "somethign wrong with the form check all fields\n";
-          }
-
-      }catch (Exception ex){
-        out.println("<hr>" + "Something wrong with the form! check all fields!" + "<hr>");
       }
-
-      out.println("<br><b><%=addItemError%></b><br>");
+      catch (Exception ex)
+      {
+        out.println("<hr>" + ex.getMessage() + "<hr>");
+      }
      }
-
-  }
+   out.println("<hr>It atleast comes here<hr>");
+   }
+  
     void displayInfo(Integer person_id, Connection conn, JspWriter out) throws SQLException, IOException{
       // select person info for user from table
       Statement stmt = null;
@@ -277,7 +309,7 @@ Enter relevant fields:
 
 
     displayInfo(person_id, conn, out);
-    form(person_id,conn , out);
+    form(person_id,request , conn , out);
 
     try{
       conn.close();
