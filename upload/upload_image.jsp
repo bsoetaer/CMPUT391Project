@@ -18,10 +18,6 @@ Please input or select the path of the image and the Record ID!
     <td><input name="image_path" type="file"></td>
   </tr>
   <tr>
-    <th>Record Id </th>
-    <td><input name="record_id" type="number"></td>
-  </tr>
-  <tr>
     <td colspan="2" align="CENTER"><input name=".submit" value="Upload" type="submit"></td>
   </tr>
 </tbody></table>

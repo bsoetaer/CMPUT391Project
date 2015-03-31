@@ -23,7 +23,7 @@ INSERT INTO users
 VALUES ('Jim','Smith', 'd', 4, SYSDATE );
 
 INSERT INTO users
-VALUES ('Jane','Doe', 'p', 5, SYSDATE );
+VALUES ('Jane','Doe', 'r', 5, SYSDATE );
 
 INSERT INTO family_doctor
 VALUES(3,2);
@@ -36,3 +36,6 @@ VALUES(4,3);
 
 INSERT INTO family_doctor
 VALUES(4,5);
+
+INSERT INTO radiology_record (record_id, patient_id ,doctor_id ,radiologist_id ,test_type ,prescribing_date ,test_date ,diagnosis ,description ) 
+VALUES ('1','2','1','5','some test',to_date('2014', 'YYYY'),to_date('2015', 'YYYY'),'He is cool', 'Cool') ;

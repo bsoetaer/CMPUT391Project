@@ -85,7 +85,8 @@ public class UploadImage extends HttpServlet {
 	    		record_id = item.getString();
 	    	}
 	    }
-
+	    
+	    record_id = request.getParameter("rid");
 	    //Get the image stream
 	    InputStream instream = imagePath.getInputStream();
 
@@ -98,9 +99,9 @@ public class UploadImage extends HttpServlet {
 	    conn.setAutoCommit(false); // THIS caused a lot of problems.. 
 	    Statement stmt = conn.createStatement();
 
-	    /*
-	     *  First, to generate a unique pic_id using an SQL sequence
-	     */
+	
+	    //First, to generate a unique pic_id using an SQL sequence
+	     
 	    stmt.setQueryTimeout(60);
 	    ResultSet rset1 = stmt.executeQuery("SELECT image_id_sequence.nextval from dual");
 	    rset1.next();
@@ -140,6 +141,7 @@ public class UploadImage extends HttpServlet {
         stmt.executeUpdate("commit");
 	    response_message = " Upload OK!  ";
         conn.close();
+        
 
 	} catch( Exception ex ) {
 	    response_message = response_message + " "+ ex.toString() ;

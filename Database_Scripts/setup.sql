@@ -16,6 +16,10 @@ DROP SEQUENCE person_seq;
 DROP SEQUENCE record_seq;
 DROP SEQUENCE image_id_sequence;
 
+DROP INDEX pfname_index ;
+DROP INDEX plname_index ;
+DROP INDEX diag_index ;
+DROP INDEX descr_index ;
 /*
  *  To store the personal information
  */
@@ -152,3 +156,39 @@ VALUES ( NULL, 'Admin', 'Admin', NULL, NULL, NULL );
  */
 INSERT INTO users
 VALUES ('Admin','Admin', 'a', 1, SYSDATE );
+
+/*
+ * Creates the indexes needed for the searching
+ */
+CREATE INDEX pfname_index ON persons(first_name) INDEXTYPE IS CTXSYS.CONTEXT;
+CREATE INDEX plname_index ON persons(last_name) INDEXTYPE IS CTXSYS.CONTEXT;
+CREATE INDEX diag_index ON radiology_record(diagnosis) INDEXTYPE IS CTXSYS.CONTEXT;
+CREATE INDEX descr_index ON radiology_record(description) INDEXTYPE IS CTXSYS.CONTEXT;
+
+/*
+
+ @drjobdml pfname_index 1
+ @drjobdml plname_index 1
+ @drjobdml diag_index 1
+ @drjobdml descr_index 1
+
+
+
+ declare 
+ job user_jobs.job%TYPE;
+ CURSOR c IS
+    select job from user_jobs;
+begin
+    OPEN c;
+    LOOP
+        fetch c into job;
+        exit when c%NOTFOUND;
+
+        dbms_output.put_line('Removing job: '||job);
+        dbms_job.remove(job);
+    END LOOP;
+    CLOSE c;
+
+    commit;
+end;
+*/

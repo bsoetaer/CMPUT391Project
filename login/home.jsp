@@ -1,4 +1,5 @@
-<HTML> 
+<HTML>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css"> 
 	<HEAD>
 	<TITLE>Home</TITLE>
 	<style>
@@ -146,14 +147,14 @@
 				out.println("<li><a href=\"../data_analysis.jsp\">Data Analysis</a></li>");
 			}
 			else if(cls.equals("r")) {
-				out.println("<li><a href=\"../upload.jsp\">Upload Images</a></li>");
+				out.println("<li><a href=\"../upload/make_record.jsp\">Records</a></li>");
 			}
 		%>
 		<li><a href="logout.jsp">Logout</a></li>
 	</ul>
 
 	<br>
-	<TABLE border=2 cellpadding=10> 
+	<TABLE class="table table-striped" border=2 cellpadding=10> 
 
 	<%
 		// Main point of execution
