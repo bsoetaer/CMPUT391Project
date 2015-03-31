@@ -4,6 +4,16 @@
 	<TITLE>Edit User Page</TITLE>
 	<style>
 		input[type=submit] {width: 15em;}
+		
+		ul {
+			list-style-type: none;
+			margin: 0;
+			padding: 0;
+		}
+
+		li {
+			display: inline;
+		}
 	</style>
 </HEAD>
 
@@ -14,8 +24,54 @@
 <%@ page import="java.util.Date" %>
 <%@ page import="java.util.*" %>
 <%@ page import="java.text.*" %>
-<%
 
+	<%!
+
+		/**
+		 * Get string data or empty string if data is null
+		 */
+		String getStringData(ResultSet rset, Integer colId) throws SQLException{
+			String data = rset.getString(colId);
+			if(data == null)
+				return "";
+			else
+				return data.trim();
+		}
+	%>
+
+	<%
+		// Return user to login page if session expired.
+		Integer person_id = (Integer) session.getAttribute("person_id");
+		String cls = "";
+		if(person_id == null) 
+			response.sendRedirect("login.jsp");
+		else
+			cls = (String) session.getAttribute("class");
+	
+		if(!cls.equals("a"))
+			response.sendRedirect("permission.html");
+	%>
+
+	<!--Navigation Bar
+		TODO: Update links.
+	-->
+	<ul>
+		<li><a href="../login/home.jsp">Home</a></li>
+		<li><a href="../login/personal_info.jsp">Change Personal Info</a></li>
+		<li><a href="../search.jsp">Search Records</a></li>
+		<% if(cls.equals("a")) { %>
+			<li><a href="userManagement.jsp">User Management</a></li>
+			<li><a href="../report_generator.jsp">Generate Reports</a></li>
+			<li><a href="../data_analysis.jsp">Data Analysis</a></li>
+		<% } else if(cls.equals("r")) { %>
+			<li><a href="../uplaod/upload.jsp">Upload Images</a></li>
+		<% } %>
+		<li><a href="../login/logout.jsp">Logout</a></li>
+	</ul>
+	
+	<br>
+
+<%
 	//establish the connection to the underlying database
 	Connection conn = null;
 	try{
@@ -116,9 +172,7 @@
 					conn.commit();
 					result = "Insert Successful!";
 				}
-				catch(Exception ex){
-					result = "Insert Failed: " + ex.getMessage();
-				}
+				catch(Exception ex){ result = "Insert Failed: "+ex.getMessage(); }
 			}
 		}
 		else if(request.getParameter("editUser") != null && result == null) {
@@ -126,15 +180,18 @@
 
 			sql = "select * from users where USER_NAME = '" + userName + "'";
 			try{ rset = stmt.executeQuery(sql); }
-			catch(Exception ex){
-				out.println("<hr>" + ex.getMessage() + "<hr>");
-			}
+			catch(Exception ex){ out.println("<hr>"+ex.getMessage()+"<hr>"); }
 		
 			if(!rset.isBeforeFirst()) {
 				result = "Update Failed: User Name enterted does not exist.";
 			}
 			else {
 				rset.next();
+				
+				boolean update = true;
+				String oldClass = rset.getString(3);
+				String oldID = rset.getString(4);
+				
 				for(int i = 0; i < 4; i++)
 				{
 					if(newData[i].equals(""))
@@ -153,22 +210,45 @@
 						Integer.parseInt(newData[4]), 0, 0, 0);
 					user[3] = formatter.format(cal.getTime());
 				}
-			
-				sql = "update users " +
-					"set PASSWORD = '" + user[0] + "', " +
-					"CLASS = '" + user[1] + "', " +
-					"PERSON_ID = '" + user[2] + "', " +
-					"DATE_REGISTERED = TO_DATE('" + 
-						user[3] + "', 'yyyy/mm/dd hh24:mi:ss') " +
-					"where USER_NAME = '" + userName + "'";
-			
-				try{
-					stmt.executeUpdate(sql);
-					conn.commit();
-					result = "Update Successful!";
+				
+				if(oldClass.equals("p") || oldClass.equals("d")) {
+					sql = "select * from family_doctor where " +
+						"doctor_id = " + oldID + " OR " +
+						"patient_id = " + oldID;
+					try{ rset = stmt.executeQuery(sql); }
+					catch(Exception ex){ out.println("<hr>"+ex.getMessage()+"<hr>"); }
+					
+					if(rset.isBeforeFirst()) {
+						int userCount = 0;
+						sql = "select * from users where Person_id = " + oldID +
+							" AND class = '" + oldClass + "'";
+						try{ rset = stmt.executeQuery(sql); }
+						catch(Exception ex){ out.println("<hr>"+ex.getMessage()+"<hr>"); }
+						
+						while(rset.next()) { userCount++; }
+						
+						if(userCount == 1) {
+							update = false;
+							result = "Insert Failed: ID is in Family Doctor Table.";
+						}
+					}
 				}
-				catch(Exception ex){
-					result = "Update Failed: " + ex.getMessage();
+			
+				if(update) {
+					sql = "update users " +
+						"set PASSWORD = '" + user[0] + "', " +
+						"CLASS = '" + user[1] + "', " +
+						"PERSON_ID = '" + user[2] + "', " +
+						"DATE_REGISTERED = TO_DATE('" + 
+							user[3] + "', 'yyyy/mm/dd hh24:mi:ss') " +
+						"where USER_NAME = '" + userName + "'";
+			
+					try{
+						stmt.executeUpdate(sql);
+						conn.commit();
+						result = "Update Successful!";
+					}
+					catch(Exception ex){ result = "Update Failed: "+ex.getMessage(); }
 				}
 			}
 		}
@@ -180,15 +260,30 @@
 		
 			if(rset.isBeforeFirst()) {
 				rset.next();
+				
+				String userClass = rset.getString(3);
+				String ID = rset.getString(4);
 		
 				if(rset.getString(3).equals("d") || rset.getString(3).equals("p")) {
 					sql = "select * from family_doctor " +
-						"where DOCTOR_ID = " + rset.getString(4) +
-						" OR PATIENT_ID = " + rset.getString(4);
+						"where DOCTOR_ID = " + ID +
+						" OR PATIENT_ID = " + ID;
 					try{ rset = stmt.executeQuery(sql); }
-					catch(Exception ex){ out.println("<hr>" + ex.getMessage() + "<hr>"); }
+					catch(Exception ex){ out.println("<hr>"+ex.getMessage()+"<hr>"); }
 					if(!rset.isBeforeFirst())
 						remove = true;
+					else {
+						int userCount = 0;
+						sql = "select * from users where Person_id = " + ID +
+							" AND class = '" + userClass + "'";
+						try{ rset = stmt.executeQuery(sql); }
+						catch(Exception ex){ out.println("<hr>"+ex.getMessage()+"<hr>"); }
+						
+						while(rset.next()) { userCount++; }
+						
+						if(userCount > 1)
+							remove = true;
+					}
 				}
 				else
 					remove = true;
@@ -216,6 +311,7 @@
 	try{ usersSet = stmt.executeQuery(sql); }
 	catch(Exception ex){ out.println("<hr>" + ex.getMessage() + "<hr>"); }
 %>
+
 	<TABLE BORDER="1">
 		<th colspan="5">users Table:</th>
 		<TR>
@@ -260,7 +356,7 @@
 		<input type=submit name=removeUser value="Remove Existing User">
 	</form>
 
-	<form method=get action=userManagement.html>
+	<form method=post action=userManagement.jsp>
 		<input type=submit name=goBack value="Exit User Edit">
 	</form>
 	

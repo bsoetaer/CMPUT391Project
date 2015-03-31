@@ -139,16 +139,13 @@
 		<li><a href="home.jsp">Home</a></li>
 		<li><a href="personal_info.jsp">Change Personal Info</a></li>
 		<li><a href="../search.jsp">Search Records</a></li>
-		<%
-			if(cls.equals("a")) {
-				out.println("<li><a href=\"../user_management.jsp\">User Management</a></li>");
-				out.println("<li><a href=\"../report_generator.jsp\">Generate Reports</a></li>");
-				out.println("<li><a href=\"../data_analysis.jsp\">Data Analysis</a></li>");
-			}
-			else if(cls.equals("r")) {
-				out.println("<li><a href=\"../upload.jsp\">Upload Images</a></li>");
-			}
-		%>
+		<% if(cls.equals("a")) { %>
+			<li><a href="../user-management/userManagement.jsp">User Management</a></li>
+			<li><a href="../report_generator.jsp">Generate Reports</a></li>
+			<li><a href="../data_analysis.jsp">Data Analysis</a></li>
+		<% } else if(cls.equals("r")) { %>
+			<li><a href="../upload.jsp">Upload Images</a></li>
+		<% } %>
 		<li><a href="logout.jsp">Logout</a></li>
 	</ul>
 

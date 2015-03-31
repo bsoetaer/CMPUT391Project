@@ -4,6 +4,16 @@
 	<TITLE>Edit User Page</TITLE>
 	<style>
 		input[type=submit] {width: 20em;}
+		
+		ul {
+			list-style-type: none;
+			margin: 0;
+			padding: 0;
+		}
+
+		li {
+			display: inline;
+		}
 	</style>
 </HEAD>
 
@@ -14,8 +24,54 @@
 <%@ page import="java.util.Date" %>
 <%@ page import="java.util.*" %>
 <%@ page import="java.text.*" %>
-<%
 
+	<%!
+
+		/**
+		 * Get string data or empty string if data is null
+		 */
+		String getStringData(ResultSet rset, Integer colId) throws SQLException{
+			String data = rset.getString(colId);
+			if(data == null)
+				return "";
+			else
+				return data.trim();
+		}
+	%>
+
+	<%
+		// Return user to login page if session expired.
+		Integer person_id = (Integer) session.getAttribute("person_id");
+		String cls = "";
+		if(person_id == null) 
+			response.sendRedirect("login.jsp");
+		else
+			cls = (String) session.getAttribute("class");
+	
+		if(!cls.equals("a"))
+			response.sendRedirect("permission.html");
+	%>
+
+	<!--Navigation Bar
+		TODO: Update links.
+	-->
+	<ul>
+		<li><a href="../login/home.jsp">Home</a></li>
+		<li><a href="../login/personal_info.jsp">Change Personal Info</a></li>
+		<li><a href="../search.jsp">Search Records</a></li>
+		<% if(cls.equals("a")) { %>
+			<li><a href="userManagement.jsp">User Management</a></li>
+			<li><a href="../report_generator.jsp">Generate Reports</a></li>
+			<li><a href="../data_analysis.jsp">Data Analysis</a></li>
+		<% } else if(cls.equals("r")) { %>
+			<li><a href="../uplaod/upload.jsp">Upload Images</a></li>
+		<% } %>
+		<li><a href="../login/logout.jsp">Logout</a></li>
+	</ul>
+	
+	<br>
+
+<%
 	//establish the connection to the underlying database
 	Connection conn = null;
 	try{
@@ -134,6 +190,7 @@
 	try{ docSet = stmt.executeQuery(sql); }
 	catch(Exception ex){ out.println("<hr>" + ex.getMessage() + "<hr>"); }
 %>
+	
 	<TABLE BORDER="1">
 		<th colspan="2">Family Doctor Table:</th>
 		<TR>
@@ -160,7 +217,7 @@
 		<input type=submit name=removeFamDoc value="Remove Existing Family Doctor">
 	</form>
 	
-	<form method=get action=userManagement.html>
+	<form method=post action=userManagement.jsp>
 		<input type=submit name=goBack value="Exit Family Doctor Edit">
 	</form>
 	
