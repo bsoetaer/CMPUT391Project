@@ -57,7 +57,7 @@
 		<li><a href="../search.jsp">Search Records</a></li>
 		<% if(cls.equals("a")) { %>
 			<li><a href="../user-management/userManagement.jsp">User Management</a></li>
-			<li><a href="../report_generator.jsp">Generate Reports</a></li>
+			<li><a href="../generate_reports/generate_report.jsp"">Generate Reports</a></li>
 			<li><a href="../data_analysis.jsp">Data Analysis</a></li>
 		<% } else if(cls.equals("r")) { %>
 			<li><a href="../upload.jsp">Upload Images</a></li>
