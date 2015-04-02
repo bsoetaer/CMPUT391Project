@@ -80,11 +80,12 @@
 		<li><a href="../search.jsp">Search Records</a></li>
 		<% if(cls.equals("a")) { %>
 			<li><a href="../user-management/userManagement.jsp">User Management</a></li>
-			<li><a href="../report_generator.jsp">Generate Reports</a></li>
+			<li><a href="../generate_reports/generate_report.jsp">Generate Reports</a></li>
 			<li><a href="../data_analysis/dataAnalysis.jsp">Data Analysis</a></li>
 		<% } else if(cls.equals("r")) { %>
-			<li><a href="../upload.jsp">Upload Images</a></li>
+			<li><a href="../upload/make_record.jsp">Upload Images</a></li>
 		<% } %>
+		<li><a href="../docs/user-manual/Change-Personal-Info.html#Change-Personal-Info">Help</a></li>
 		<li><a href="logout.jsp">Logout</a></li>
 	</ul>
 

@@ -75,6 +75,11 @@
 	%>
 
 	<% 
+		// Redirect user to home page if they are already logged in.
+		Integer person_id = (Integer) session.getAttribute("person_id");
+		if(person_id != null) 
+			response.sendRedirect("home.jsp");
+
 		// If user submitted data.
 		if(request.getParameter("bSubmit") != null) {
 
