@@ -1,0 +1,201 @@
+\input texinfo   @c -*-texinfo-*-
+@c %**start of header
+@setfilename user-manual
+@settitle Radiology Information System User Manual
+@c %**end of header
+
+@copying
+Radiology Information System User Manual
+
+Created by Braeden Soetaert, Tyler Meen, Vincent Phung
+@end copying
+
+@titlepage
+@title Radiology Information System User Manual
+@page
+@vskip 0pt plus 1filll
+@insertcopying
+@end titlepage
+
+@c Output the table of contents
+@contents
+
+@page
+
+@ifnottex
+@node Top
+@top User Manual Menu
+@uref{../../login/home.jsp,,Home Page}
+
+This is a user manual for the Radiology Information System developed in the CMPUT 391 course.
+@end ifnottex
+
+@menu
+* Login/Home:: Logging in and the Home page.
+* User Management::    For Admins to manage users.
+* Report Generation::  For Admins to generate reports of patients with a specific diagnosis for a specific time period.
+* Uploading Images:: For Radiologists to upload images and create radiology records.
+* Search:: Search system for radiology records and images relevant to you.
+* Data Analysis:: For Admin to generate and display an OLAP report for data analysis
+* Index::            Complete index.
+@end menu
+
+@node Login/Home 
+@chapter Login/Home
+@ifnottex
+@uref{../../login/home.jsp,,Home Page}
+@end ifnottex
+
+Login to the system using your username and password. Once logged in, you will stay logged in unless you are inactive for 30 mins or more at a time. If you are inactive for this long you will have to log back in.
+
+@menu
+* Change Personal Info:: Change personal information.
+* Home:: Home page.
+* Login:: Logging in.
+* Logout:: Logging out.
+@end menu
+
+@cindex Login Module
+
+@node Change Personal Info 
+@section Change Personal Info
+@ifnottex
+@uref{../../login/home.jsp,,Home Page}
+@end ifnottex
+
+You can change your personal info by clicking the ``Change Personal Info'' link in the navigation bar at the top of any page.
+
+From this page you can change your personal password, address, email, and phone number. You can not change any of these pieces of information to be a blank value. If you submit a blank value for any piece of changeable information then the old value will be kept instead.
+
+The reset button will reset the changeable information to their previous values. Once you press the submit button you will be displayed with a page that will update you about the status of your request to change information. If this page says your information was not successfully updated or that you did not submit any data please return to the change personal info page and try again.
+
+@cindex Personal Info
+@cindex Change Personal Info
+
+@node Home 
+@section Home
+@ifnottex
+@uref{../../login/home.jsp,,Home Page}
+@end ifnottex
+
+The home page displays your personal information for this current client session. You can use the links in the bar at the top of the page to navigate around the site. This home page is displayed upon first logging into the site and you will also be redirected to this homepage if you try to access another page that you do not have the correct permissions for.
+
+@cindex Home Page
+
+@node Login
+@section Login
+@ifnottex
+@uref{../../login/home.jsp,,Home Page}
+@end ifnottex
+
+The login page will only allow you to login if you provide a valid username and password. Once you have logged in you will be logged out if you are inactive for 30 mins and you will be returned to this login page. Failed attempts will prompt the user to reenter their credentials.
+
+@cindex Login
+
+@node Logout
+@section Logout
+@ifnottex
+@uref{../../login/home.jsp,,Home Page}
+@end ifnottex
+
+You can logout of the system by pressing the logout link in the navigation bar at the top of any page. Pressing this will log you out of the system and you will have to log back in via the login page. 
+
+You will also be logged out and need to login again if you try to perform an action after having been inactive for 30 mins or more.
+ 
+@cindex Logout
+
+@node User Management
+@chapter User Management
+@ifnottex
+@uref{../../login/home.jsp,,Home Page}
+@end ifnottex
+
+TODO Insert User Management Stuff here
+
+@cindex User Management Module
+@cindex User Management
+
+@node Report Generation
+@chapter Report Generation
+@ifnottex
+@uref{../../login/home.jsp,,Home Page}
+@end ifnottex
+
+This module can be used by an administrator to generate reports of patient's name, address, phone number and date diagnosed for a given time period and diagnosis. Only admins can access these pages. All other users will be redirected to the home page.
+
+Only admins can access this page. All other users will be redirected to the home page if attempting to access this page.
+
+@menu
+* Request Diagnosis Report:: Enter request for report.
+* Diagnosis Report Results:: Interpreting report results.
+@end menu
+
+@cindex Generate Reports
+@cindex Report Generation
+
+@node Request Diagnosis Report
+@section Request Diagnosis Report
+@ifnottex
+@uref{../../login/home.jsp,,Home Page}
+@end ifnottex
+
+Request a diagnosis report by entering the beginning date from the drop down menus and the ending date from the drop down menus. Also select a diagnosis for which you want to see patients for. The diagnosis option of 'All Patients' will generate a report of all patients with a radiology test date inside the given range.
+
+@cindex Request Diagnosis Report
+@cindex Diagnosis Report, request
+
+@node Diagnosis Report Results
+@section Diagnosis Report Results
+@ifnottex
+@uref{../../login/home.jsp,,Home Page}
+@end ifnottex
+
+The report displays the entered parameters of begin/end time and diagnosis. If no data was obtained for the given parameters no data will be displayed and an error message will be displayed. Otherwise a table will be displayed containing each patient's first name, last name, address, phone, and the earliest date they were diagnosed with the givne diagnosis for the time fram specified.
+
+For instance if John Doe was diagnosed with prostate cancer on both March 5th, 2013 and April 25th 2013 then a report with the time frame of 2013 for prostate cancer will only show the March 5th date. If the time frame is only April 2013 instead it will only show the April 25th date.
+
+@cindex Diagnosis Report Results
+@cindex Interpret Diagnosis Report
+
+@node Uploading Images
+@chapter Uploading Images
+@ifnottex
+@uref{../../login/home.jsp,,Home Page}
+@end ifnottex
+
+TODO Insert Upload Stuff here
+
+@cindex Upload Module
+@cindex Uploading Images
+
+@node Search
+@chapter Search
+@ifnottex
+@uref{../../login/home.jsp,,Home Page}
+@end ifnottex
+
+TODO Insert Search Stuff here
+
+@cindex Search Module
+@cindex Search
+
+@node Data Analysis
+@chapter Data Analysis
+@ifnottex
+@uref{../../login/home.jsp,,Home Page}
+@end ifnottex
+
+TODO Insert Data Analysis Stuff Here
+
+@cindex Data Analysis Module
+@cindex Data Analysis
+
+@node Index
+@unnumbered Index
+@ifnottex
+@uref{../../login/home.jsp,,Home Page}
+@end ifnottex
+
+@printindex cp
+
+@bye

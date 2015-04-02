@@ -53,7 +53,8 @@
 		<% } else if(cls.equals("r")) { %>
 			<li><a href="../upload/make_record.jsp">Upload Images</a></li>
 		<% } %>
-		<li><a href="logout.jsp">Logout</a></li>
+		<li><a href="../docs/user-manual/Request-Diagnosis-Report.html#Request-Diagnosis-Report">Help</a></li>
+		<li><a href="../login/logout.jsp">Logout</a></li>
 	</ul>
 
 	<%
