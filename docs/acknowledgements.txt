@@ -1,0 +1,5 @@
+Acknowledgements to remember for reports and stuff.
+
+login.jsp (Example code from eclass)
+navigation bar (http://www.w3schools.com/css/css_navbar.asp)
+dropdown box (http://www.echoecho.com/htmlforms11.htm)
