@@ -45,11 +45,11 @@
 		String cls = "";
 		if(person_id == null) 
 			response.sendRedirect("login.jsp");
-		else {
+		else
 			cls = (String) session.getAttribute("class");
-			if(!cls.equals("a"))
-				response.sendRedirect("../login/home.jsp");
-		}
+	
+		if(!cls.equals("a"))
+			response.sendRedirect("permission.html");
 	%>
 
 	<!--Navigation Bar
