@@ -203,7 +203,8 @@ For instance if John Doe was diagnosed with prostate cancer on both March 5th, 2
 @uref{../../login/home.jsp,,Home Page}
 @end ifnottex
 
-TODO Insert Upload Stuff here
+The Upload module allows the user to create records at the
+top of the page and upload images into the individual records. In the creating page there is a form at top to allow for the creation of records. At the bottom of the page there is a table that shows each record that the radiologist has created. By clicking on the hyptertext located at each recordId the user is redirected to the upload image page. Here the radiologist can upload images into the record. 
 
 @cindex Upload Module
 @cindex Uploading Images
@@ -214,7 +215,7 @@ TODO Insert Upload Stuff here
 @uref{../../login/home.jsp,,Home Page}
 @end ifnottex
 
-TODO Insert Search Stuff here
+This module is used to search records that the current user has access to. The access rules are as follows: a patient can only view his/her own records; a doctor can only view records of their patients; a radiologist can only review records conducted by oneself; and an administrator can view any records. When entering info into the form you must enter atleast one date when sorting by date, and atleast one keyword when by sorting by ranking. If an end date is entered but no start date, then everything up untilt he end date will be selected. If no dates are entered for a ranking search then all no dates will be taken into account. If the start date is chosen without the end date, then everything after the start date will be selected. After the records have been searched the tables will be displayed at the bottom , with clickable thumbnails to view the pictures.
 
 @cindex Search Module
 @cindex Search

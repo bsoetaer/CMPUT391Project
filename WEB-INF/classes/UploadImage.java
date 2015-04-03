@@ -156,7 +156,7 @@ public class UploadImage extends HttpServlet {
 		    "<HEAD><TITLE>Upload Message</TITLE></HEAD>\n" +
 		    "<BODY>\n" +
 		    "<H1>" +
-		            response_message + "   ....as;dfkasjd;fklajsdf"  + 
+		            response_message + 
 		    "</H1>\n" +
 		    "</BODY></HTML>");
     }

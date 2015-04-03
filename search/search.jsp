@@ -220,7 +220,7 @@ Search Parameters:
             sql = selectQuery + whereClause + containsQuery + orderClause;
           }
           
-          out.println( sql);
+          //out.println( sql);
           Statement stmt = null;
           ResultSet rset = null;
           try{
