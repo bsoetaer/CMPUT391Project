@@ -17,7 +17,7 @@ Search Parameters:
     <td>
     <input type="radio" name="sort_by" value="recent_first">Test Date: Most Recent First<br>
     <input type="radio" name="sort_by" value="recent_last">Test Date: Most Recent Last<br>
-    <input type="radio" name="sort_by" value="rank" checked="checked">Rankings<br>
+    <input type="radio" name="sort_by" value="rank">Rankings<br>
     </td>
   </tr>
   <tr>
@@ -86,8 +86,9 @@ Search Parameters:
 
           //okay figure out what kind of user i am!
           if (cls.equals("a")){
+            whereClause = whereClause + "r.patient_id = p.person_id";
           }else if (cls.equals("p")){
-            whereClause = whereClause + " r.patient_id = " + person_id;
+            whereClause = whereClause + " r.patient_id = " + person_id + " AND r.patient_id = p.person_id";
           }else if (cls.equals("d")){
             whereClause = whereClause + " r.doctor_id = " + person_id+ " AND r.patient_id = p.person_id" ;
           }else if (cls.equals("r")){
@@ -98,17 +99,18 @@ Search Parameters:
           }
 
           whereClause = whereClause + " AND ";
-
+          from_date = request.getParameter("from_date");
+          to_date = request.getParameter("to_date");
           // figure out dates!
           if (request.getParameter("from_date").equals("")){
             from_date = "1900-01-01";
           }
           if (request.getParameter("to_date").equals("")){
             to_date = "9999-12-12";
-          } else{
-            from_date ="TO_DATE('"+request.getParameter("from_date")+"'  , 'yyyy-MM-dd' )" ;
-            to_date ="TO_DATE('"+request.getParameter("to_date")+"'  , 'yyyy-MM-dd' )" ;
-          }
+          } 
+          from_date ="TO_DATE('"+from_date+"'  , 'yyyy-MM-dd' )" ;
+          to_date ="TO_DATE('"+to_date+"'  , 'yyyy-MM-dd' )" ;
+
           if (request.getParameter("sort_by").equals("recent_first")){
             whereClause = whereClause + " r.test_date > " + from_date +" and r.test_date < " + to_date;
             orderClause = orderClause + " r.test_date DESC";
@@ -130,6 +132,7 @@ Search Parameters:
           // then we would go do rank of mega then add to rank of cool etc for total
 
           // so first we gotta split the words by ... space
+
           String[] myKeywords = request.getParameter("keywords").split(" ");
           out.println("the number of key words was : " + myKeywords.length); 
           out.println(" <br> " ) ;
@@ -160,9 +163,16 @@ Search Parameters:
 
           // get that from clause!
           selectQuery = selectQuery + "FROM radiology_record r , persons p ";
-          String sql = selectQuery + whereClause + containsQuery + orderClause;
+          String sql = "";
+          if (request.getParameter("keywords").equals("")){
+            selectQuery = "Select 0 as rank, p.first_name , p.last_name, r.record_id, r.patient_id , r.radiologist_id , r.test_type , r.prescribing_date , r.test_date , "+
+            "diagnosis , description " + "FROM radiology_record r , persons p ";
+            sql = selectQuery + whereClause + orderClause;
+          } else{
+            sql = selectQuery + whereClause + containsQuery + orderClause;
+          }
           
-
+          out.println( sql);
           Statement stmt = null;
           ResultSet rset = null;
           try{
@@ -235,7 +245,7 @@ Search Parameters:
               out.println(rset.getString(11)); //description
               out.println("</td>");
               out.println("<td>");
-
+              
               // get the images for each record dude ..
               Statement innerStmt = null;
               ResultSet innerRset = null;
@@ -244,13 +254,14 @@ Search Parameters:
                 "WHERE record_id = "+ record_id; //hard code for now
               try{
                 innerStmt = conn.createStatement();
-                innerRset = stmt.executeQuery(getImageSql);
+                innerRset = innerStmt.executeQuery(getImageSql);
               }
               catch(Exception ex){
                 out.println("<hr>" + ex.getMessage() + "<hr>");
                 return;
               }
 
+              
               if (innerRset != null) {
                 out.println("<table>");
                 out.println("<table border=1>");
@@ -280,7 +291,7 @@ Search Parameters:
 
                 out.println("</table>");
               } 
-
+              
               out.println("</td>"); // end image stuff 
               out.println("</tr>"); 
             }
