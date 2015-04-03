@@ -52,20 +52,19 @@
 		}
 	%>
 
-	<!--Navigation Bar
-		TODO: Update links.
-	-->
+	<!--Navigation Bar	-->
 	<ul>
 		<li><a href="../login/home.jsp">Home</a></li>
 		<li><a href="../login/personal_info.jsp">Change Personal Info</a></li>
-		<li><a href="../search.jsp">Search Records</a></li>
+		<li><a href="../search/search.jsp">Search Records</a></li>
 		<% if(cls.equals("a")) { %>
 			<li><a href="userManagement.jsp">User Management</a></li>
-			<li><a href="../report_generator.jsp">Generate Reports</a></li>
+			<li><a href="../generate_reports/generate_report.jsp">Generate Reports</a></li>
 			<li><a href="../data_analysis/dataAnalysis.jsp">Data Analysis</a></li>
 		<% } else if(cls.equals("r")) { %>
-			<li><a href="../uplaod/upload.jsp">Upload Images</a></li>
+			<li><a href="../upload/make_record.jsp">Upload Images</a></li>
 		<% } %>
+		<li><a href="../docs/user-manual/Edit-Family-Doctor.html#Edit-Family-Doctor">Help</a></li>
 		<li><a href="../login/logout.jsp">Logout</a></li>
 	</ul>
 	

@@ -133,9 +133,7 @@
 			cls = (String) session.getAttribute("class");
 	%>
 
-	<!--Navigation Bar
-		TODO: Update links.
-	-->
+	<!--Navigation Bar-->
 	<ul>
 		<li><a href="home.jsp">Home</a></li>
 		<li><a href="personal_info.jsp">Change Personal Info</a></li>

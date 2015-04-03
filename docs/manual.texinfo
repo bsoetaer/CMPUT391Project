@@ -110,16 +110,50 @@ You will also be logged out and need to login again if you try to perform an act
 @uref{../../login/home.jsp,,Home Page}
 @end ifnottex
 
-This module is brokent into 3 different parts. There is a Edit Person section, Edit User section, and a Edit Family Doctor section. Only admin users have access to these sections.
+This module is broken into 3 different parts. There is a Edit Person section, Edit User section, and a Edit Family Doctor section. Only admin users have access to these sections.
 
-Edit Person: In this section you can edit the info in the Persons table. To add a new person the email address has to be unique, and the ID field has to be left blank. To edit an existing person, the ID needs to be filled with the ID of the person to edit. Any field left blank while editing an existing person will be filled in with the previous value that was in the table already. Removing an existing person requires that the ID field is filled in as well as the ID existing. If the ID is being used in one of the other tables, or is used as a radiology technician, the removal will fail.
-
-Edit User: This section is for edditing the users table. When adding a new user, the User Name must be unique. The date fields are optional, if nothing is entered then the current date will be used. The password field and ID field need to be filled to add a new user, the ID field must match an ID in the person table. When edditing the User Name must be entered and match a User Name in the users table. If a user is a d or p and they are in the family doctor table, they can not be changed or deleted. When removing a user, the User Name field must be filled in. If a date is entered that does not exist, such as feb 31, it will instead be entered as march 2/3 depending on the year. It will add any extra days to the next month.
-
-Edit Family Doctor: When adding a new entry to this table, the IDs must both exist in the persons table, and the docor ID must exist with a d class in the users table, and the patient ID must exist in the users table with a p class. There is no limit on deleting entries from this table.
+@menu
+* Edit Person:: Change person's info.
+* Edit User:: Change user login information.
+* Edit Family Doctor:: Change Doctor/Patient relationships.
+@end menu
 
 @cindex User Management Module
 @cindex User Management
+
+@node Edit Person
+@section Edit Person
+@ifnottex
+@uref{../../login/home.jsp,,Home Page}
+@end ifnottex
+
+In this section you can edit the info in the Persons table. To add a new person the email address has to be unique, and the ID field has to be left blank. To edit an existing person, the ID needs to be filled with the ID of the person to edit. Any field left blank while editing an existing person will be filled in with the previous value that was in the table already. Removing an existing person requires that the ID field is filled in as well as the ID existing. If the ID is being used in one of the other tables, or is used as a radiology technician, the removal will fail.
+
+@cindex Edit Person
+@cindex Person, edit
+
+@node Edit User
+@section Edit User
+@ifnottex
+@uref{../../login/home.jsp,,Home Page}
+@end ifnottex
+
+This section is for editing the users table. When adding a new user, the User Name must be unique. The date fields are optional, if nothing is entered then the current date will be used. The password field and ID field need to be filled to add a new user, the ID field must match an ID in the person table. When edditing the User Name must be entered and match a User Name in the users table. If a user is a d or p and they are in the family doctor table, they can not be changed or deleted. When removing a user, the User Name field must be filled in. If a date is entered that does not exist, such as feb 31, it will instead be entered as march 2/3 depending on the year. It will add any extra days to the next month.
+
+@cindex Edit User
+@cindex User, edit
+
+@node Edit Family Doctor
+@section Edit Family Doctor
+@ifnottex
+@uref{../../login/home.jsp,,Home Page}
+@end ifnottex
+
+Edit Family Doctor: When adding a new entry to this table, the IDs must both exist in the persons table, and the docor ID must exist with a d class in the users table, and the patient ID must exist in the users table with a p class. There is no limit on deleting entries from this table.
+
+@cindex Edit Family Doctor
+@cindex Doctor, edit
+@cindex Family Doctor, edit
 
 @node Report Generation
 @chapter Report Generation
