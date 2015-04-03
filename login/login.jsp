@@ -8,6 +8,7 @@
 		entered. Once a valid pair is entered, creates a new session for the user
 		and redirects to the home page.
 		@author  Braeden Soetaert
+		This code was created based off code created by Hong-Yu Zhang at the University of Alberta.
 	 -->
 	<%@ page import="java.sql.*" %>
 	<%@ page import="javax.sql.*" %>

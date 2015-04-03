@@ -27,7 +27,7 @@
 		Integer person_id = (Integer) session.getAttribute("person_id");
 		String cls = "";
 		if(person_id == null) 
-			response.sendRedirect("login.jsp");
+			response.sendRedirect("../login/login.jsp");
 		else {
 			cls = (String) session.getAttribute("class");
 			if(!cls.equals("a"))
@@ -35,20 +35,19 @@
 		}
 	%>
 
-	<!--Navigation Bar
-		TODO: Update links.
-	-->
+	<!--Navigation Bar -->
 	<ul>
 		<li><a href="../login/home.jsp">Home</a></li>
 		<li><a href="../login/personal_info.jsp">Change Personal Info</a></li>
-		<li><a href="../search.jsp">Search Records</a></li>
+		<li><a href="../search/search.jsp">Search Records</a></li>
 		<% if(cls.equals("a")) { %>
 			<li><a href="userManagement.jsp">User Management</a></li>
-			<li><a href="../report_generator.jsp">Generate Reports</a></li>
+			<li><a href="../generate_reports/generate_report.jsp">Generate Reports</a></li>
 			<li><a href="../data_analysis/dataAnalysis.jsp">Data Analysis</a></li>
 		<% } else if(cls.equals("r")) { %>
-			<li><a href="../uplaod/upload.jsp">Upload Images</a></li>
+			<li><a href="../upload/make_record.jsp">Upload Images</a></li>
 		<% } %>
+		<li><a href="../docs/user-manual/Edit-Person.html#Edit-Person">Help</a></li>
 		<li><a href="../login/logout.jsp">Logout</a></li>
 	</ul>
 	
@@ -83,6 +82,8 @@
 		newData[1] = (request.getParameter("LastName")).trim();
 		newData[2] = (request.getParameter("Address")).trim();
 		newData[3] = (request.getParameter("Email")).trim();
+		if(newData[3].equals(""))
+			newData[3] = "null";
 		newData[4] = (request.getParameter("Phone")).trim();
 		
 		try {
@@ -103,7 +104,7 @@
 				result = "Failed: No data entered.";
 		}
 		
-		if(request.getParameter("addPerson") != null && result == null) {
+		if(request.getParameter("addPerson") != null && result == null) {			
 			if(!ID.equals("")) {
 				result = "Insert Failed: " +
 					"Can not add person with specific ID. Please try again.";
@@ -154,9 +155,8 @@
 					"ADDRESS = '" + person[2] + "', " +
 					"EMAIL = '" + person[3] + "', " +
 					"PHONE = '" + person[4] + "' " +
-					"where PERSON_ID = '" +
-					ID + "'";
-			
+					"where PERSON_ID = " +
+					ID;
 				try{
 					stmt.executeUpdate(sql);
 					conn.commit();
@@ -246,15 +246,48 @@
 	<% } %>
 	
 	<form method=post action=personEdit.jsp>
-		<input type=number name=ID maxlength=10 placeholder="ID"><br>
-		<input type=text name=FirstName maxlength=24 placeholder="First Name"><br>
-		<input type=text name=LastName maxlength=24 placeholder="Last Name"><br>
-		<input type=text name=Address maxlength=128 placeholder="Address"><br>
-		<input type=email name=Email maxlength=128 placeholder="Email"><br>
-		<input type=text name=Phone maxlength=10 placeholder="Phone"><br>
-		<input type=submit name=addPerson value= "Add New Person"><br>
-		<input type=submit name=editPerson value="Edit Existing Person"><br>
-		<input type=submit name=removePerson value="Remove Existing Person">
+		<input type=number
+			   name=ID
+			   max=<%= Long.MAX_VALUE %>
+			   min=0
+			   placeholder="ID"><br>
+			   
+		<input type=text
+			   name=FirstName
+			   maxlength=24
+			   placeholder="First Name"><br>
+			   
+		<input type=text
+			   name=LastName
+			   maxlength=24
+			   placeholder="Last Name"><br>
+			   
+		<input type=text
+			   name=Address
+			   maxlength=128
+			   placeholder="Address"><br>
+			   
+		<input type=email
+			   name=Email
+			   maxlength=128
+			   placeholder="Email"><br>
+			   
+		<input type=text
+			   name=Phone
+			   maxlength=10
+			   placeholder="Phone"><br>
+			   
+		<input type=submit
+			   name=addPerson
+			   value= "Add New Person"><br>
+			   
+		<input type=submit
+			   name=editPerson
+			   value="Edit Existing Person"><br>
+			   
+		<input type=submit
+			   name=removePerson
+			   value="Remove Existing Person">
 	</form>
 	
 	<form method=post action=userManagement.jsp>

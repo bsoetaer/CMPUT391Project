@@ -30,7 +30,7 @@
 		Integer person_id = (Integer) session.getAttribute("person_id");
 		String cls = "";
 		if(person_id == null) 
-			response.sendRedirect("login.jsp");
+			response.sendRedirect("../login/login.jsp");
 		else {
 			cls = (String) session.getAttribute("class");
 			if(!cls.equals("a"))
@@ -38,20 +38,19 @@
 		}
 	%>
 
-	<!--Navigation Bar
-		TODO: Update links.
-	-->
+	<!--Navigation Bar -->
 	<ul>
 		<li><a href="../login/home.jsp">Home</a></li>
 		<li><a href="../login/personal_info.jsp">Change Personal Info</a></li>
-		<li><a href="../search.jsp">Search Records</a></li>
+		<li><a href="../search/search.jsp">Search Records</a></li>
 		<% if(cls.equals("a")) { %>
 			<li><a href="userManagement.jsp">User Management</a></li>
-			<li><a href="../report_generator.jsp">Generate Reports</a></li>
+			<li><a href="../generate_reports/generate_report.jsp">Generate Reports</a></li>
 			<li><a href="../data_analysis/dataAnalysis.jsp">Data Analysis</a></li>
 		<% } else if(cls.equals("r")) { %>
-			<li><a href="../uplaod/upload.jsp">Upload Images</a></li>
+			<li><a href="../upload/make_record.jsp">Upload Images</a></li>
 		<% } %>
+		<li><a href="../docs/user-manual/Edit-User.html#Edit-User">Help</a></li>
 		<li><a href="../login/logout.jsp">Logout</a></li>
 	</ul>
 	
@@ -332,11 +331,27 @@
     		<option>d</option>
     		<option>r</option>
 		</select><br>
-		<input type=number name=ID maxlength=10 placeholder="ID"><br>
+		<input type=number
+			   name=ID
+			   max=<%= Long.MAX_VALUE %>
+			   min=0
+			   placeholder="ID"><br>
 		Date Registered:<br>
-			<input type=number name=dateMM placeholder="mm"><br>
-			<input type=number name=dateDD placeholder="dd"><br>
-			<input type=number name=dateYYYY placeholder="yyyy"><br>
+			<input type=number
+				   name=dateMM
+				   max=12
+			       min=1
+				   placeholder="mm"><br>
+			<input type=number
+				   name=dateDD
+				   max=31
+			       min=1
+				   placeholder="dd"><br>
+			<input type=number
+				   name=dateYYYY
+				   max=3000
+			       min=0
+				   placeholder="yyyy"><br>
 		<input type=submit name=addUser value="Add New User"><br>
 		<input type=submit name=editUser value="Edit Existing User"><br>
 		<input type=submit name=removeUser value="Remove Existing User">
