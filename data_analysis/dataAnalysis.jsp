@@ -219,7 +219,7 @@
 			}
 		%>
 		<TABLE BORDER="1">
-			<th colspan="2"><%= tableName %> Table:</th>
+			<th colspan="3"><%= tableName %> Table:</th>
 			<TR>
 				<TH>Year</TH>
 				<TH>Week Number</TH>
@@ -246,7 +246,7 @@
 			}
 		%>
 		<TABLE BORDER="1">
-			<th colspan="2"><%= tableName %> Table:</th>
+			<th colspan="3"><%= tableName %> Table:</th>
 			<TR>
 				<TH>Year</TH>
 				<TH>Month</TH>
