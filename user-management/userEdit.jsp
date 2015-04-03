@@ -30,7 +30,7 @@
 		Integer person_id = (Integer) session.getAttribute("person_id");
 		String cls = "";
 		if(person_id == null) 
-			response.sendRedirect("login.jsp");
+			response.sendRedirect("../login/login.jsp");
 		else {
 			cls = (String) session.getAttribute("class");
 			if(!cls.equals("a"))
@@ -332,11 +332,27 @@
     		<option>d</option>
     		<option>r</option>
 		</select><br>
-		<input type=number name=ID maxlength=10 placeholder="ID"><br>
+		<input type=number
+			   name=ID
+			   max=<%= Long.MAX_VALUE %>
+			   min=0
+			   placeholder="ID"><br>
 		Date Registered:<br>
-			<input type=number name=dateMM placeholder="mm"><br>
-			<input type=number name=dateDD placeholder="dd"><br>
-			<input type=number name=dateYYYY placeholder="yyyy"><br>
+			<input type=number
+				   name=dateMM
+				   max=12
+			       min=1
+				   placeholder="mm"><br>
+			<input type=number
+				   name=dateDD
+				   max=31
+			       min=1
+				   placeholder="dd"><br>
+			<input type=number
+				   name=dateYYYY
+				   max=3000
+			       min=0
+				   placeholder="yyyy"><br>
 		<input type=submit name=addUser value="Add New User"><br>
 		<input type=submit name=editUser value="Edit Existing User"><br>
 		<input type=submit name=removeUser value="Remove Existing User">

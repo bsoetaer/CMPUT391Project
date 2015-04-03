@@ -44,7 +44,7 @@
 		Integer person_id = (Integer) session.getAttribute("person_id");
 		String cls = "";
 		if(person_id == null) 
-			response.sendRedirect("login.jsp");
+			response.sendRedirect("../login/login.jsp");
 		else {
 			cls = (String) session.getAttribute("class");
 			if(!cls.equals("a"))
@@ -211,8 +211,16 @@
 	<% } %>
 
 	<form method=post action=famDocEdit.jsp>
-		<input type=number name=DocID maxlength=24 placeholder="Doctor ID"><br>
-		<input type=number name=PatID maxlength=24 placeholder="Patient ID"><br>
+		<input type=number
+			   name=DocID
+			   max=<%= Long.MAX_VALUE %>
+			   min=0
+			   placeholder="Doctor ID"><br>
+		<input type=number
+			   name=PatID
+			   max=<%= Long.MAX_VALUE %>
+			   min=0
+			   placeholder="Patient ID"><br>
 		<input type=submit name=addFamDoc value="Add New Family Doctor"><br>
 		<input type=submit name=removeFamDoc value="Remove Existing Family Doctor">
 	</form>
