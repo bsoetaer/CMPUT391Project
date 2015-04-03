@@ -1,14 +1,57 @@
 <!DOCTYPE html PUBLIC "-//w3c//dtd html 4.0 transitional//en">
 <html><head>
 <meta http-equiv="content-type" content="text/html; charset=windows-1252"> 
-<title>Upload image</title> 
+<title>Make Record</title> 
+
+<style>
+    ul {
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    li {
+      display: inline;
+    }
+  </style>
 </head>
 <body> 
+
+<!--Page to make records.
+    @author  Vincent Phung
+   -->
+
+  <%
+    // Return user to login page if session expired.
+    Integer person_id = (Integer) session.getAttribute("person_id");
+    String cls = "";
+    if(person_id == null) 
+      response.sendRedirect("login.jsp");
+    else
+      cls = (String) session.getAttribute("class");
+  %>
+
+
+  <ul>
+    <li><a href="home.jsp">Home</a></li>
+    <li><a href="personal_info.jsp">Change Personal Info</a></li>
+    <li><a href="../search/search.jsp">Search Records</a></li>
+    <% if(cls.equals("a")) { %>
+      <li><a href="../user-management/userManagement.jsp">User Management</a></li>
+      <li><a href="../generate_reports/generate_report.jsp">Generate Reports</a></li>
+      <li><a href="../data_analysis/dataAnalysis.jsp">Data Analysis</a></li>
+    <% } else if(cls.equals("r")) { %>
+      <li><a href="../upload/make_record.jsp">Upload Images</a></li>
+    <% } %>
+    <li><a href="../docs/user-manual/Home.html#Home">Help</a></li>
+    <li><a href="../login/logout.jsp">Logout</a></li>
+  </ul>
+
 
 <h4>Create Radiologist Record!
 </h4>
 <p>
-</p><hr>
+</p>
 Enter relevant fields:
 <form name="Create_rad_record" action="/CMPUT391Project/upload/make_record.jsp?rid=${param.rid}">
 <table>
@@ -65,7 +108,6 @@ Enter relevant fields:
     
      if (request.getParameter("create_record") != null)
      {
-     out.println("<hr> OKAY THEN I CAN ATLEAST CREATE RECORD<hr>");
       try{
         if(!
         (request.getParameter("patient_id").equals("") || 
@@ -138,7 +180,6 @@ Enter relevant fields:
         out.println("<hr>" + ex.getMessage() + "<hr>");
       }
      }
-   out.println("<hr>It atleast comes here<hr>");
    }
   
     void displayInfo(Integer person_id, Connection conn, JspWriter out) throws SQLException, IOException{
@@ -213,64 +254,8 @@ Enter relevant fields:
       }
     }
     
-    /**
-     * Get and display family doctor names as an html tabl row.
-     */
-    void getDoctor(Integer person_id, Connection conn, JspWriter out) throws SQLException, IOException {
 
-      // Select family doctors from table
-      Statement stmt = null;
-      ResultSet rset = null;
-      String sql = "SELECT first_name, last_name " +
-        "FROM persons p, family_doctor f " +
-        "WHERE f.patient_id = "+person_id+" " +
-        "AND f.doctor_id = p.person_id";
-      try{
-        stmt = conn.createStatement();
-        rset = stmt.executeQuery(sql);
-      }
-      catch(Exception ex){
-        out.println("<hr>" + ex.getMessage() + "<hr>");
-      }
 
-      if(rset.isBeforeFirst()) {
-        out.println("<TR>");
-        out.println("<TD>Family Doctor(s) </TD>");
-        out.println("<TD>");
-      }
-
-      String doc_name = "";
-      while (rset != null && rset.next()) {
-        doc_name = getStringData(rset, 1) + " " + getStringData(rset, 2);
-        out.println("Dr. "+doc_name+"<br>");
-      }
-
-      if( rset.isAfterLast() ) {
-        out.println("</TD>");
-        out.println("</TR>");
-      }
-    }
-
-    /**
-     * Get string data or empty string if data is null
-     */
-    String getStringData(ResultSet rset, Integer colId) throws SQLException{
-      String data = rset.getString(colId);
-      if(data == null)
-        return "";
-      else
-        return data.trim();
-    }
-  %>
-
-  <%
-    // Return user to login page if session expired.
-    Integer person_id = (Integer) session.getAttribute("person_id");
-    String cls = "";
-    if(person_id == null) 
-      response.sendRedirect("login.jsp");
-    else
-      cls = (String) session.getAttribute("class");
   %>
 
   <%
