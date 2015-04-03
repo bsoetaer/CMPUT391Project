@@ -1,5 +1,4 @@
 <HTML>
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css"> 
 	<HEAD>
 	<TITLE>Home</TITLE>
 	<style>
@@ -150,7 +149,7 @@
 	</ul>
 
 	<br>
-	<TABLE class="table table-striped" border=2 cellpadding=10> 
+	<TABLE border=2 cellpadding=10> 
 
 	<%
 		// Main point of execution
