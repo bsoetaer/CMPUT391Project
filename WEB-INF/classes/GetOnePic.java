@@ -9,14 +9,15 @@ import javax.sql.*;
  *  This servlet sends one picture stored in the table below to the client 
  *  who requested the servlet.
  *
- *   picture( photo_id: integer, title: varchar, place: varchar, 
- *            sm_image: blob,   image: blob )
+ *  
  *
  *  The request must come with a query string as follows:
- *    GetOnePic?12:        sends the picture in sm_image with photo_id = 12
- *    GetOnePic?big12: sends the picture in image  with photo_id = 12
+ *    GetOnePic?full12:        sends the full picutre with photo_id = 12
+ *    GetOnePic?regular 12: sends the regular sized picture  with photo_id = 12
+ *    GetOnePic?thumbnail 12: sends the thumbnail   with photo_id = 12
  *
  *  @author  Li-Yan Yuan
+ *  @Modified by Vincent Phung
  *
  */
 public class GetOnePic extends HttpServlet 

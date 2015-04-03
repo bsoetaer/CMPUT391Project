@@ -2,8 +2,53 @@
 <html><head>
 <meta http-equiv="content-type" content="text/html; charset=windows-1252"> 
 <title>Upload image</title> 
+<style>
+    ul {
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    li {
+      display: inline;
+    }
+  </style>
 </head>
 <body> 
+
+<!--Page to make upload images to record. Based on examples provided by
+  Dr. Yuan
+    @author  Vincent Phung
+   -->
+
+    <%
+    // Return user to login page if session expired.
+    Integer person_id = (Integer) session.getAttribute("person_id");
+    String cls = "";
+    if(person_id == null) 
+      response.sendRedirect("login.jsp");
+    else
+      cls = (String) session.getAttribute("class");
+  %>
+
+  <!--Navigation Bar
+    TODO: Update links.
+  -->
+  <ul>
+    <li><a href="home.jsp">Home</a></li>
+    <li><a href="personal_info.jsp">Change Personal Info</a></li>
+    <li><a href="../search/search.jsp">Search Records</a></li>
+    <% if(cls.equals("a")) { %>
+      <li><a href="../user-management/userManagement.jsp">User Management</a></li>
+      <li><a href="../generate_reports/generate_report.jsp">Generate Reports</a></li>
+      <li><a href="../data_analysis/dataAnalysis.jsp">Data Analysis</a></li>
+    <% } else if(cls.equals("r")) { %>
+      <li><a href="../upload/make_record.jsp">Upload Images</a></li>
+    <% } %>
+    <li><a href="../docs/user-manual/Home.html#Home">Help</a></li>
+    <li><a href="../login/logout.jsp">Logout</a></li>
+  </ul>
+
 
 <h4>Images Uploaded to Record id ${param.rid}</h4>
 
@@ -74,6 +119,8 @@
     
 
   %>
+
+
 
 <%
     // Main point of execution
