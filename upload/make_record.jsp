@@ -102,7 +102,7 @@ Enter relevant fields:
             String diagnosis = request.getParameter("diagnosis");
             String description = request.getParameter("description");
             // date stuff
-            DateFormat dateFormat = new SimpleDateFormat("MM-dd-yyyy");
+            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
             Date prescribing_date = dateFormat.parse(sprescribing_date);
             Date test_date = dateFormat.parse(stest_date);
 

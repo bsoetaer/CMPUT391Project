@@ -2,6 +2,8 @@ import java.io.*;
 import javax.servlet.*;
 import javax.servlet.http.*;
 import java.sql.*;
+import javax.naming.*;
+import javax.sql.*;
 
 /**
  *  This servlet sends one picture stored in the table below to the client 
@@ -52,18 +54,19 @@ public class GetOnePic extends HttpServlet
 	    conn = getConnected();
 	    Statement stmt = conn.createStatement();
 	    ResultSet rset = stmt.executeQuery(query);
-
+	    
 	    if ( rset.next() ) {
-		response.setContentType("image/jpg");
-		InputStream input = rset.getBinaryStream(1);	    
-		int imageByte;
-		while((imageByte = input.read()) != -1) {
-		    out.write(imageByte);
-		}
-		input.close();
-	    } 
+			response.setContentType("image/jpg");
+			InputStream input = rset.getBinaryStream(1);	    
+			int imageByte;
+			while((imageByte = input.read()) != -1) {
+			    out.write(imageByte);
+			}
+			input.close();
+	    }
 	    else 
-		out.println("no picture available");
+			out.println("no picture available");
+		
 	} catch( Exception ex ) {
 	    out.println(ex.getMessage() );
 	}
@@ -82,17 +85,9 @@ public class GetOnePic extends HttpServlet
      */
     private Connection getConnected() throws Exception {
 
-	String username = "vzphung";
-	String password = "superman123";
-        /* one may replace the following for the specified database */
-	String dbstring = "jdbc:oracle:thin:@gwynne.cs.ualberta.ca:1521:CRS";
-	String driverName = "oracle.jdbc.driver.OracleDriver";
-
-	/*
-	 *  to connect to the database
-	 */
-	Class drvClass = Class.forName(driverName); 
-	DriverManager.registerDriver((Driver) drvClass.newInstance());
-	return( DriverManager.getConnection(dbstring,username,password) );
-    }
+		Context initContext = new InitialContext();
+		Context envContext  = (Context)initContext.lookup("java:/comp/env");
+		DataSource ds = (DataSource)envContext.lookup("jdbc/myoracle");
+		return( ds.getConnection());
+	}
 }

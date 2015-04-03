@@ -139,7 +139,7 @@
 	<ul>
 		<li><a href="home.jsp">Home</a></li>
 		<li><a href="personal_info.jsp">Change Personal Info</a></li>
-		<li><a href="../search.jsp">Search Records</a></li>
+		<li><a href="../search/search.jsp">Search Records</a></li>
 		<% if(cls.equals("a")) { %>
 			<li><a href="../user-management/userManagement.jsp">User Management</a></li>
 			<li><a href="../generate_reports/generate_report.jsp">Generate Reports</a></li>
